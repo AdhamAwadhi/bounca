@@ -1,9 +1,9 @@
 """Models for storing subject and certificate information"""
-
+import json
 import uuid
 
 from django.contrib.auth.models import User
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField as ArrayFieldOrg
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
@@ -19,6 +19,18 @@ from certificate_engine.ssl.crl import revocation_list_builder, serialize
 from certificate_engine.ssl.info import get_certificate_fingerprint, get_certificate_info
 from certificate_engine.ssl.key import Key as KeyGenerator
 from certificate_engine.types import CertificateTypes
+
+
+class ArrayField(ArrayFieldOrg):
+    def to_python(self, value):
+        if isinstance(value, str):
+            # Assume we're deserializing
+            vals = json.loads(value)
+            value = [self.base_field.to_python(val) for val in vals]
+
+        if isinstance(value, list):
+            value = json.dumps(value)
+        return value
 
 
 class DistinguishedName(models.Model):

@@ -34,7 +34,16 @@ class Migration(migrations.Migration):
                 ('organizationalUnitName', models.CharField(blank=True, help_text='The division of your organization handling the certificate.', max_length=64, null=True, validators=[django.core.validators.RegexValidator('^[0-9a-zA-Z@#$%^&+=\\_\\.\\-\\,\\ \\*]*$', 'Only alphanumeric characters and [@#$%^&+=_,-.] are allowed.')], verbose_name='Organization Unit Name')),
                 ('emailAddress', models.EmailField(blank=True, help_text='The email address to contact your organization.', max_length=64, null=True, validators=[django.core.validators.RegexValidator('^[0-9a-zA-Z@#$%^&+=\\_\\.\\-\\,\\ \\*]*$', 'Only alphanumeric characters and [@#$%^&+=_,-.] are allowed.')], verbose_name='Email Address')),
                 ('commonName', models.CharField(help_text='The fully qualified domain name (FQDN) of your server. This must match exactly what you type in your web browser or you will receive a name mismatch error.', max_length=64, validators=[django.core.validators.RegexValidator('^[0-9a-zA-Z@#$%^&+=\\_\\.\\-\\,\\ \\*]*$', 'Only alphanumeric characters and [@#$%^&+=_,-.] are allowed.')], verbose_name='Common Name')),
-                ('subjectAltNames', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=64, validators=[django.core.validators.RegexValidator('^[0-9a-zA-Z@#$%^&+=\\_\\.\\-\\,\\ \\*]*$', 'Only alphanumeric characters and [@#$%^&+=_,-.] are allowed.')]), blank=True, help_text='subjectAltName list, i.e. dns names for server certs and email adresses for client certs. (separate by comma)', null=True, size=None)),
+                # TODO Replace by switch in case Postgresql is used select ArrayField, otherwise Textfield
+                # ('subjectAltNames', django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=64, validators=[django.core.validators.RegexValidator('^[0-9a-zA-Z@#$%^&+=\\_\\.\\-\\,\\ \\*]*$', 'Only alphanumeric characters and [@#$%^&+=_,-.] are allowed.')]), blank=True, help_text='subjectAltName list, i.e. dns names for server certs and email adresses for client certs. (separate by comma)', null=True, size=None)),
+                ('subjectAltNames', models.TextField(
+                    validators=[
+                        django.core.validators.RegexValidator(
+                            '^[0-9a-zA-Z@#$%^&+=\\_\\.\\-\\,\\ \\*]*$',
+                            'Only alphanumeric characters and [@#$%^&+=_,-.] are allowed.')],
+                    blank=True,
+                    help_text='subjectAltName list, i.e. dns names for server certs and email adresses for client certs. (separate by comma)',
+                    null=True)),
             ],
         ),
         migrations.CreateModel(

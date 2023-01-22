@@ -35,21 +35,36 @@ if KEY_ALGORITHM not in ["ed25519", "rsa"]:
     raise ValueError(f"Key algorithm {KEY_ALGORITHM} not supported")
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #     "NAME": SERVICES["psql"]["dbname"],
+    #     "USER": SERVICES["psql"]["username"],
+    #     "PASSWORD": SERVICES["psql"]["password"],
+    #     "HOST": SERVICES["psql"]["host"],
+    #     "PORT": SERVICES["psql"].get("port", "5432"),
+    #     # Keep and re-use database connections across requests.  Takes a TTL
+    #     # in seconds, or 0 for "don't re-use connections," or None to re-use
+    #     # connections forever.
+    #     "CONN_MAX_AGE": 10,
+    #     "TEST": {
+    #         "NAME": SERVICES["psql"]["dbname"] + "-test-" + str(os.getpid()),
+    #         "CHARSET": "UTF8",
+    #     },
+    # },
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": SERVICES["psql"]["dbname"],
-        "USER": SERVICES["psql"]["username"],
-        "PASSWORD": SERVICES["psql"]["password"],
-        "HOST": SERVICES["psql"]["host"],
-        "PORT": SERVICES["psql"].get("port", "5432"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": 'bounca.db',
+        # "USER": SERVICES["psql"]["username"],
+        # "PASSWORD": SERVICES["psql"]["password"],
+        # "HOST": SERVICES["psql"]["host"],
+        # "PORT": SERVICES["psql"].get("port", "5432"),
         # Keep and re-use database connections across requests.  Takes a TTL
         # in seconds, or 0 for "don't re-use connections," or None to re-use
         # connections forever.
-        "CONN_MAX_AGE": 10,
-        "TEST": {
-            "NAME": SERVICES["psql"]["dbname"] + "-test-" + str(os.getpid()),
-            "CHARSET": "UTF8",
-        },
+        # "TEST": {
+        #     "NAME": SERVICES["psql"]["dbname"] + "-test-" + str(os.getpid()),
+        #     "CHARSET": "UTF8",
+        # },
     }
 }
 
